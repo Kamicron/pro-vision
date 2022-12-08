@@ -20,3 +20,27 @@ function dbConnect()
 }
 //======================================//
 
+//======================================//
+//            add Ingredients           //
+//======================================//
+function addIngredients($name_ingredient)
+{
+  $database=dbConnect();
+  $Insert = $database->prepare("INSERT INTO `ingredients` (`idIngredients`, `name_ingredients`) VALUES (NULL, '$name_ingredient')");
+  $Insert->execute();
+}
+//======================================//
+
+//======================================//
+//         Delete selected table        //
+//======================================//
+function deleteTable($name_ingredient)
+{
+  $database=dbConnect();
+  $Insert = $database->prepare("SET FOREIGN_KEY_CHECKS = 0");
+  $Insert->execute();
+
+  $Insert = $database->prepare("TRUNCATE TABLE $name_ingredient");
+  $Insert->execute();
+}
+//======================================//
