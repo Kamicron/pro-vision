@@ -2,9 +2,6 @@
 include("src/bdd.php");
 include("src/function.php");
 
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
 if (isset($_POST['TableSelect']) && !is_null($_POST)) {
   $ingredient = $_POST["TableSelect"];
   echo $ingredient;

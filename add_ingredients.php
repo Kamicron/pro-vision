@@ -13,7 +13,7 @@ if (isset($_POST) && !is_null($_POST) && isset($_POST['nameIngredients'])) {
     if($check) {
       msg("danger", "L'ingrediant: ".$_POST['nameIngredients']." existe déjà"); 
     } else {
-      addIngredients($_POST['nameIngredients']);
+      addItemInTable("ingredients", $_POST['nameIngredients']);
       msg("success", "Vous avez ajouter un ingrédient: ".$_POST['nameIngredients']); 
     }
 

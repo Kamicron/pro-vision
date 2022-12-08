@@ -21,12 +21,12 @@ function dbConnect()
 //======================================//
 
 //======================================//
-//            add Ingredients           //
+//          add item in table           //
 //======================================//
-function addIngredients($name_ingredient)
+function addItemInTable($table,$name_ingredient)
 {
   $database=dbConnect();
-  $Insert = $database->prepare("INSERT INTO `ingredients` (`idIngredients`, `name_ingredients`) VALUES (NULL, '$name_ingredient')");
+  $Insert = $database->prepare("INSERT INTO $table (`id$table`, `name_$table`) VALUES (NULL, '$name_ingredient')");
   $Insert->execute();
 }
 //======================================//
@@ -48,12 +48,11 @@ function deleteTable($name_table)
 //======================================//
 //            Check duplicate           //
 //======================================//
-function checkDuplicate($table, $nameCol, $nameItem)
+function checkDuplicate($table, $nameItem)
 {
   $database=dbConnect();
-  $sql = "SELECT * FROM $table WHERE $nameCol = :nom";
+  $sql = "SELECT * FROM $table WHERE name_$table = '$nameItem'";
   $stmt = $database->prepare($sql);
-  $stmt->bindValue(":nom", $nameItem);
   $stmt->execute();
   
   // Récupération des résultats de la requête
@@ -62,3 +61,21 @@ function checkDuplicate($table, $nameCol, $nameItem)
   return $resultat;
 }
 //======================================//
+
+//======================================//
+//        select all ingredients        //
+//======================================//
+function selectAllIngredients()
+{
+  $database=dbConnect();
+  $sql = "SELECT * FROM ingredients";
+  $stmt = $database->prepare($sql);
+  $stmt->execute();
+  
+  // Récupération des résultats de la requête
+  $resultat = $stmt->fetchall();
+
+  return $resultat;
+}
+//======================================//
+
