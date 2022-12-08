@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Abel');
+
+:root {
+  
+  --PrimaryColor50: #66818F;
+  --PrimaryColor75: #5D7683;
+  --PrimaryColor100: #556C78;
+  --PrimaryColor125: #4C606B;
+  --PrimaryColor150: #44565F;
+
+
+
+  --SecondaryColor: #5E8F8E;
+  --ThirdColor: #5AA385;
+
+  --blackColor: #1A1A26;
+  --Grey75: #575859;
+  --Grey50: #AAABAD;
+  --Grey25: #E8E9ED;
+  --White: #FAFBFF;
+
+  --Danger: #FF6B64;
+  --Warning: #FFE87D;
+  --Sucess: #7DFFAE;
+}

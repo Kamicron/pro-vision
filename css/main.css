@@ -1,0 +1,17 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  background: var(--Grey75);
+  font-family: Abel, Arial, Verdana, sans-serif;
+  color: var(--Black);
+}
+
+a {
+  text-decoration: none;
+  color: var(--Black);
+}
+
