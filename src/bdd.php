@@ -28,6 +28,8 @@ function addItemInTable($table,$name_ingredient)
   $database=dbConnect();
   $Insert = $database->prepare("INSERT INTO $table (`id$table`, `name_$table`) VALUES (NULL, '$name_ingredient')");
   $Insert->execute();
+
+  return $database->lastInsertId();
 }
 //======================================//
 
@@ -79,3 +81,27 @@ function selectAllIngredients()
 }
 //======================================//
 
+//======================================//
+//     add item in secondary table      //
+//======================================//
+function addItemInSecondaryTable($table1, $table2, $idTable1Array, $idTable2)
+{
+  $idTable1=$idTable1Array['idIngredients'];
+  echo '<pre>';
+  print_r($idTable1);
+  echo '</pre>';
+  $table=$table1."_has_".$table2;
+  $database=dbConnect();
+  $name1=$table1."_id".$table1;
+  $name2=$table2."_id".$table2;
+  echo "table: ".$table.'<br>';
+  echo "name1: ".$name1.'<br>';
+  echo "name2: ".$name2.'<br>';
+  echo "idTable1: ".$idTable1.'<br>';
+  echo "idTable2: ".$idTable2.'<br>';
+
+  $Insert = $database->prepare("INSERT INTO `$table` (`$name1`, `$name2`) VALUES ('$idTable1', '$idTable2')");
+  echo "INSERT INTO `$table` (`$name1`, `$name2`) VALUES ('$idTable1', '$idTable2')"; 
+  $Insert->execute();
+}
+//======================================//

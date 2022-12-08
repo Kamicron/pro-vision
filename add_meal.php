@@ -17,7 +17,7 @@ if (isset($_POST) && !is_null($_POST) && isset($_POST['nameMeal'])) {
     if($check) {
       msg("danger", "Le repas : ".$_POST['nameMeal']." existe déjà"); 
     } else {
-      addItemInTable("meal", $_POST['nameMeal']);
+      $id=addItemInTable("meal", $_POST['nameMeal']);
       msg("success", "Vous avez ajouter le repas: ".$_POST['nameMeal']); 
     }
   }
@@ -38,17 +38,24 @@ if (isset($_POST) && !is_null($_POST) && isset($_POST['nameMeal'])) {
     <?php
     } 
   }
-  header("Location: add_meal.php");
+  
+  foreach ($_POST["ingredients"] as $key => $ingredient) {
+    $item=checkDuplicate("ingredients", $ingredient);
+    addItemInSecondaryTable("ingredients", "meal", $item, $id);
+    echo $id;
+    echo '<br>';
+    echo '<pre>';
+    print_r($item);
+    echo '</pre>';
+    echo '<hr>';
+  } 
 
 
+  // header("Location: add_meal.php");
 
 }
 
 $ingredients=selectAllIngredients();
-
-// echo '<pre>';
-// print_r($_POST);
-// echo '</pre>';
 
 ?>
 
