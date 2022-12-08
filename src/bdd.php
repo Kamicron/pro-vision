@@ -34,13 +34,31 @@ function addIngredients($name_ingredient)
 //======================================//
 //         Delete selected table        //
 //======================================//
-function deleteTable($name_ingredient)
+function deleteTable($name_table)
 {
   $database=dbConnect();
   $Insert = $database->prepare("SET FOREIGN_KEY_CHECKS = 0");
   $Insert->execute();
 
-  $Insert = $database->prepare("TRUNCATE TABLE $name_ingredient");
+  $Insert = $database->prepare("TRUNCATE TABLE $name_table");
   $Insert->execute();
+}
+//======================================//
+
+//======================================//
+//            Check duplicate           //
+//======================================//
+function checkDuplicate($table, $nameCol, $nameItem)
+{
+  $database=dbConnect();
+  $sql = "SELECT * FROM $table WHERE $nameCol = :nom";
+  $stmt = $database->prepare($sql);
+  $stmt->bindValue(":nom", $nameItem);
+  $stmt->execute();
+  
+  // Récupération des résultats de la requête
+  $resultat = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  return $resultat;
 }
 //======================================//

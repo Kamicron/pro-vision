@@ -9,8 +9,14 @@ if (isset($_POST) && !is_null($_POST) && isset($_POST['nameIngredients'])) {
     msg("danger", "Vous n'avez pas inscrit d'ingrédient");
     header("Location: add_ingredients.php");
   } else {
-    addIngredients($_POST['nameIngredients']);
-    msg("success", "Vous avez ajouter un ingrédient: ".$_POST['nameIngredients']); 
+    $check=checkDuplicate("ingredients","name_Ingredients",$_POST['nameIngredients']);
+    if($check) {
+      msg("danger", "L'ingrediant: ".$_POST['nameIngredients']." existe déjà"); 
+    } else {
+      addIngredients($_POST['nameIngredients']);
+      msg("success", "Vous avez ajouter un ingrédient: ".$_POST['nameIngredients']); 
+    }
+
     header("Location: add_ingredients.php");
   }
 }
