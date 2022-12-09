@@ -42,16 +42,10 @@ if (isset($_POST) && !is_null($_POST) && isset($_POST['nameMeal'])) {
   foreach ($_POST["ingredients"] as $key => $ingredient) {
     $item=checkDuplicate("ingredients", $ingredient);
     addItemInSecondaryTable("ingredients", "meal", $item, $id);
-    echo $id;
-    echo '<br>';
-    echo '<pre>';
-    print_r($item);
-    echo '</pre>';
-    echo '<hr>';
   } 
 
 
-  // header("Location: add_meal.php");
+  header("Location: add_meal.php");
 
 }
 

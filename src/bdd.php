@@ -87,21 +87,136 @@ function selectAllIngredients()
 function addItemInSecondaryTable($table1, $table2, $idTable1Array, $idTable2)
 {
   $idTable1=$idTable1Array['idIngredients'];
-  echo '<pre>';
-  print_r($idTable1);
-  echo '</pre>';
+
   $table=$table1."_has_".$table2;
   $database=dbConnect();
   $name1=$table1."_id".$table1;
   $name2=$table2."_id".$table2;
-  echo "table: ".$table.'<br>';
-  echo "name1: ".$name1.'<br>';
-  echo "name2: ".$name2.'<br>';
-  echo "idTable1: ".$idTable1.'<br>';
-  echo "idTable2: ".$idTable2.'<br>';
+
 
   $Insert = $database->prepare("INSERT INTO `$table` (`$name1`, `$name2`) VALUES ('$idTable1', '$idTable2')");
-  echo "INSERT INTO `$table` (`$name1`, `$name2`) VALUES ('$idTable1', '$idTable2')"; 
   $Insert->execute();
+}
+//======================================//
+
+
+//======================================//
+//         Création utilsiateur         //
+//======================================//
+
+function createUser($username, $email, $password) {
+  $database=dbConnect();
+  $token = str_rand(60);
+  $Insert = $database->prepare("INSERT INTO `users` (`id_users`, `username`, `email`, `password`, confirmation_token) VALUES (NULL, '$username', '$email', '$password', '$token')");
+  $Insert->execute();
+  $lastIdJoueur = $database->lastInsertId();
+  echo '<hr>';
+  echo $lastIdJoueur." ".$token;
+  echo '<hr>';
+  $url=URL;
+  // mail($email, "Confirmer votre compte","Afin de valider votre commpte merci de cliquer sur ce lien\n\nhttps://landers.ovh/confirm.php?id=$lastIdJoueur&token=$token");
+  header('Location : login.php');
+  exit();
+}
+//======================================//
+
+//======================================//
+//      Vérification meme pseudo        //
+//======================================//
+
+function verificationPseudo($username) {
+  $database=dbConnect();
+  $Insert = $database->prepare("SELECT `id_users` FROM users WHERE username=?");
+  $Insert->execute($username);
+  
+  return $Insert;
+}
+//======================================//
+
+//======================================//
+//      Vérification meme email         //
+//======================================//
+
+function verificationEmail($email) {
+  $database=dbConnect();
+  $Insert = $database->prepare("SELECT `id_users` FROM users WHERE email=?");
+  $Insert->execute($email);
+  
+  return $Insert;
+}
+//======================================//
+
+//======================================//
+//      Validation inscription          //
+//======================================//
+
+function updateUser($id) {
+  $database=dbConnect();
+  $sql = "UPDATE `users` SET `confirmation_token`= NULL,`confirmed_at`= NOW() WHERE `id_users`=?;";
+  $stmt= $database->prepare($sql);
+  $stmt->execute([$id]);
+}
+
+function validationUser($id,$token) {
+  $database=dbConnect();
+  $Insert = $database->prepare("
+  SELECT *
+  FROM `users` 
+  WHERE id_users=".$id); 
+  $Insert->execute();
+  $user= $Insert->fetch();
+  session_start();
+  if($user && $user['confirmation_token']==$token) {
+      echo('ok');
+      echo 'sessions start';
+      updateUser($id);
+      echo 'updateusr';
+      $_SESSION['auth'] = $user;
+      echo 'redirection';
+      header('Location: account.php');
+      exit();
+  } else {
+      $_SESSION['flash']['danger']="Ce token n'est plus valide";
+      header('Location: login.php');
+      exit();
+  }
+}
+//======================================//
+
+//======================================//
+//        Connexion d'un users          //
+//======================================//
+
+function connexionUser($username) {
+  $database=dbConnect();
+  $req = $database -> prepare ("
+  SELECT *
+  FROM `users` 
+  WHERE (username= :username OR email= :username) AND  confirmed_at IS NOT NULL");
+  $req -> execute(['username' => $username]);
+  $user = $req -> fetch();
+  return $user;
+}
+//======================================//
+
+//======================================//
+//      Vérification meme email         //
+//======================================//
+
+function isAdmin($id) {
+
+  $admin=false;
+  $database=dbConnect();
+  $Insert = $database->prepare("SELECT * FROM `users_has_user_role` WHERE idUsers=$id;");
+  $Insert->execute();
+  $user = $Insert -> fetchAll();
+
+  foreach ($user as $key => $datas) {
+    if ($datas['idUser_role']==1) {
+      $admin=true;
+    }
+  }
+
+  return $admin;
 }
 //======================================//
