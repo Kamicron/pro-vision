@@ -4,7 +4,11 @@ include('src/bdd.php');
 include('src/function.php');
 
 if (!empty($_POST) && !empty($_POST['username']) && !empty($_POST['password'])) {
+
   $user=connexionUser($_POST['username']);
+  echo '<pre>';
+  print_r($user);
+  echo '</pre>';
   $role=isAdmin($user['id_users']);
   if(password_verify($_POST['password'], $user['password'])) {
     $_SESSION['auth'] = $user;
