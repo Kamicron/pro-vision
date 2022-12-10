@@ -5,10 +5,10 @@ include('src/function.php');
 
 if (!empty($_POST) && !empty($_POST['username']) && !empty($_POST['password'])) {
   $user=connexionUser($_POST['username']);
-  $admin=isAdmin($user['id_users']);
+  $role=isAdmin($user['id_users']);
   if(password_verify($_POST['password'], $user['password'])) {
     $_SESSION['auth'] = $user;
-    $_SESSION['admin'] = $admin;
+    $_SESSION['role'] = $role;
     $_SESSION['flash']['success'] = "Vous êtes maintenant connecté";
     
     echo '<pre>';

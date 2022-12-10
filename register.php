@@ -35,6 +35,7 @@ include('src/function.php');
       $_SESSION['flash']['success'] = "Un email de confirmation vous a été envoyé pour valider votre compte";
       $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
       createUser($_POST['username'], $_POST['email'], $password);
+      header('Location : login.php');
     }
   }
 ?>

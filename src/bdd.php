@@ -114,9 +114,8 @@ function createUser($username, $email, $password) {
   echo $lastIdJoueur." ".$token;
   echo '<hr>';
   $url=URL;
-  // mail($email, "Confirmer votre compte","Afin de valider votre commpte merci de cliquer sur ce lien\n\nhttps://landers.ovh/confirm.php?id=$lastIdJoueur&token=$token");
-  header('Location : login.php');
-  exit();
+  mail($email, "Confirmer votre compte","Afin de valider votre commpte merci de cliquer sur ce lien\n\nhttps://landers.ovh/confirm.php?id=$lastIdJoueur&token=$token");
+  echo $email."Confirmer votre compte","Afin de valider votre commpte merci de cliquer sur ce lien\n\nhttps://landers.ovh/confirm.php?id=$lastIdJoueur&token=$token";
 }
 //======================================//
 
@@ -155,6 +154,11 @@ function updateUser($id) {
   $sql = "UPDATE `users` SET `confirmation_token`= NULL,`confirmed_at`= NOW() WHERE `id_users`=?;";
   $stmt= $database->prepare($sql);
   $stmt->execute([$id]);
+
+  $database=dbConnect();
+  $Insert = $database->prepare("INSERT INTO `users_has_user_role` (`idUsers`, `idUser_role`) VALUES ($id, '2')");
+  $Insert->execute();
+
 }
 
 function validationUser($id,$token) {
@@ -200,12 +204,12 @@ function connexionUser($username) {
 //======================================//
 
 //======================================//
-//      Vérification meme email         //
+//         Vérification admin           //
 //======================================//
 
 function isAdmin($id) {
 
-  $admin=false;
+  $role=0;
   $database=dbConnect();
   $Insert = $database->prepare("SELECT * FROM `users_has_user_role` WHERE idUsers=$id;");
   $Insert->execute();
@@ -215,8 +219,18 @@ function isAdmin($id) {
     if ($datas['idUser_role']==1) {
       $admin=true;
     }
+    if ($datas['idUser_role']==2) {
+      $membre=true;
+    }
   }
 
-  return $admin;
+  if ($admin) {
+    $role=1;
+  } else if ($membre) {
+    $role=2;
+  } else {
+    $role=0;
+  }
+  return $role;
 }
 //======================================//
