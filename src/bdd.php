@@ -116,6 +116,22 @@ function addItemInSecondaryTable($table1, $table2, $idTable1Array, $idTable2)
 }
 //======================================//
 
+//======================================//
+//  select all in table where name=var  //
+//======================================//
+function selectAllWhereName($table,$name,$var)
+{
+  $database=dbConnect();
+  $sql = "SELECT * FROM $table WHERE $name = '$var'";
+  $stmt = $database->prepare($sql);
+  $stmt->execute();
+  
+  // Récupération des résultats de la requête
+  $resultat = $stmt->fetchall();
+
+  return $resultat;
+}
+//======================================//
 
 //======================================//
 //         Création utilsiateur         //
