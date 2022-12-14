@@ -9,6 +9,7 @@ notLogged();
 $data=selectAll("list");
 
 
+
 if (isset($_POST) && !is_null($_POST) && isset($_POST['nameList'])) {
   
   if ($_POST['nameList'] == "") {
@@ -27,6 +28,13 @@ if (isset($_POST) && !is_null($_POST) && isset($_POST['nameList'])) {
   }
 }
 
+if (isset($_GET) && isset($_GET['id'])) {
+  $ingredients[]=selectAllWhereId('ingredients_has_list', 'List_idList', $_GET['id']);
+
+  foreach ($ingredients[0] as $keyingredient => $ingredient) {
+    $dataIngredients[]=selectAllWhereId('ingredients','idIngredients',$ingredient['ingredients_idIngredients']);
+  }
+}
 ?>
 
 <h1>Bonjour <?php echo $_SESSION['auth']['username'] ;?> ! Voici vos listes</h1>
@@ -45,13 +53,27 @@ if (isset($_POST) && !is_null($_POST) && isset($_POST['nameList'])) {
 <div>
   <ul>
   <?php foreach ($data as $keylist => $list) { ?>
-      <li><?php echo $list['name_list'] ;?></li>
-
-      
+      <a href="list.php?id=<?php echo $list['idList'] ;?>"><li><?php echo $list['name_list'] ;?></li></a>
     <?php
   };
   ?>
   </ul>
 </div>
 
+<ul>
+<?php
+  if (isset($_GET) && isset($_GET['id'])) {
+    if (!isset($dataIngredients)) {
+      echo "Il n'y a pas d'ingredients dans cette liste";
+    } else {
+      foreach ($dataIngredients as $keydata => $data) {?>
+        <li><?php echo $data[0]['name_ingredients'] ; ?></li>
+        
+      <?php
+      }
+   }
+
+  }
+?>
+</ul>
 <?php require('commun/footer.php') ?>

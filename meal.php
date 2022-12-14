@@ -18,21 +18,25 @@ if (isset($_POST) && !empty($_POST)) {
     $idIngredients=selectAllWhereId('ingredients_has_meal','meal_idmeal',$repas[0]['idMeal']);
     foreach ($idIngredients as $keyingredients => $ingredients) {
       $ingredient[]=selectAllWhereId('ingredients','idIngredients',$ingredients['ingredients_idIngredients']);
-      echo 'key: '.$keyingredients;
-      echo '<pre>';
-      print_r($ingredient);
-      echo '</pre>';
-      echo '<hr>';
-      echo "name : " . $ingredient[$keyingredients][0]['name_ingredients'];
-      $nameIngredients[]=$ingredient['name_ingredients'];
     }
-    echo '<hr>';
-    echo '<pre>';
-    print_r($nameIngredients);
-    echo '</pre>';
+
   }
 }
 
+foreach ($ingredient as $keydatas => $data) {
+  $idIngredient[]=$data[0]['idIngredients']."<br>";
+}
+$listByName= selectAllWhereName('list','name_list',$_POST['list']);
+echo 'id list : ' . $listByName[0]['idList'];
+
+$idIngredient=array_unique($idIngredient);
+echo'<pre>';
+print_r($idIngredient);
+echo'</pre>';
+foreach ($idIngredient as $keydata => $data) {
+  echo "id ingredients" . $data;
+  addItemInSecondaryTable('ingredients', 'list', $data, $listByName[0]['idList']);
+}
 
 ?>
 
@@ -47,7 +51,7 @@ if (isset($_POST) && !empty($_POST)) {
       <?php
       }
       ?>
-    </select>
+    </select>é&
   </div>
   <hr>
   <div class="flexbox">
