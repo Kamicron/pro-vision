@@ -65,12 +65,29 @@ function checkDuplicate($table, $nameItem)
 //======================================//
 
 //======================================//
-//        select all ingredients        //
+//         select all in table          //
 //======================================//
-function selectAllIngredients()
+function selectAll($table)
 {
   $database=dbConnect();
-  $sql = "SELECT * FROM ingredients";
+  $sql = "SELECT * FROM $table";
+  $stmt = $database->prepare($sql);
+  $stmt->execute();
+  
+  // Récupération des résultats de la requête
+  $resultat = $stmt->fetchall();
+
+  return $resultat;
+}
+//======================================//
+
+//======================================//
+//   select all in table where id=var   //
+//======================================//
+function selectAllWhereId($table,$id,$var)
+{
+  $database=dbConnect();
+  $sql = "SELECT * FROM $table WHERE $id = $var";
   $stmt = $database->prepare($sql);
   $stmt->execute();
   

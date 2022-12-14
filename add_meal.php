@@ -49,7 +49,7 @@ if (isset($_POST) && !is_null($_POST) && isset($_POST['nameMeal'])) {
 
 }
 
-$ingredients=selectAllIngredients();
+$ingredients=selectAll("	ingredients");
 
 ?>
 

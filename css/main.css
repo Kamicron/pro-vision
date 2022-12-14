@@ -8,10 +8,77 @@ html, body {
   background: var(--Grey75);
   font-family: Abel, Arial, Verdana, sans-serif;
   color: var(--Black);
+  
+}
+
+h1 {
+  color: var(--SecondaryColor);
 }
 
 a {
   text-decoration: none;
   color: var(--Black);
+}
+
+.flexbox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+.wrapper {
+  margin: 0 10rem;
+}
+
+.card {
+  width: 20em;
+  background-color: var(--White);
+
+  box-shadow: rgba(var(--blackColor) 0.2) 0px 8px 24px;
+}
+
+.card h1 {
+  text-align: center;
+}
+
+.card header {
+  border-bottom: 1px solid var(--blackColor);
+}
+
+.card ul {
+  margin-top: 10px;
+}
+
+.dropdown-menu {
+  display: none; /* Masque le menu par défaut */
+  background-color: #04AA6D;
+  padding: 0px;
+  color: var(--blackColor);
+  border-radius: 0;
+}
+
+.dropdown {
+  padding: 8px;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block; /* Affiche le menu lorsque la souris est sur l'élément */
+  background-color: var(--White);
+  position: absolute;
+  padding-top: 10px;
+  top :3  0px;
+  box-shadow:  0 4px 8px 0 rgba(var(--blackColor), 0.3);
+  z-index: 10;
+  
+}
+
+.dropdown-menu li {
+  color: var(--blackColor);
+  transition: 0.3s ease-in-out;
+}
+
+.dropdown-menu li:hover {
+  color: var(--ThirdColor);
+  translate: 10px;
 }
 
