@@ -193,6 +193,9 @@ function validationUser($id,$token) {
       updateUser($id);
       echo 'updateusr';
       $_SESSION['auth'] = $user;
+      $_SESSION['role'] = 2;
+      $_SESSION['flash']['success']="Votre compte à bien été validé";
+
       echo 'redirection';
       header('Location: account.php');
       exit();
@@ -249,5 +252,18 @@ function isAdmin($id) {
     $role=0;
   }
   return $role;
+}
+//======================================//
+
+//======================================//
+//            add new list              //
+//======================================//
+function addNewList($name_list,$id)
+{
+  $database=dbConnect();
+  $Insert = $database->prepare("INSERT INTO `list` (`idList`, `name_list`, `users_idusers`) VALUES (NULL, '$name_list',$id)");
+  $Insert->execute();
+
+  return $database->lastInsertId();
 }
 //======================================//
